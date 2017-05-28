@@ -1,0 +1,535 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+    <!-- http://responsivevoice.org/api/ -->
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+        <script src="jsondata.js" type="text/javascript"></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+		<script src="http://code.responsivevoice.org/responsivevoice.js"></script>
+        <link rel="stylesheet" href="css/flexboxgrid.min.css" type="text/css">
+        <link rel="stylesheet" href="css/reset.css" type="text/css">
+        <!--<link rel="stylesheet" href="css/main.css"> -->
+        <style type="text/css">
+        	@font-face {
+			    font-family: "adventpro-extralight";
+			    src: url(fonts/advent-pro/adventpro-extralight.ttf);
+			}
+			@font-face {
+			    font-family: "adventpro-light";
+			    src: url(fonts/advent-pro/adventpro-light.ttf);
+			}
+			@font-face {
+			    font-family: "adventpro-medium";
+			    src: url(fonts/advent-pro/adventpro-medium.ttf);
+			}
+	        html{
+			    height:100%;/* make sure it is at least as tall as the viewport */
+			    /*position:relative;*/
+			    min-width: 750px;
+			}
+			.titles {
+				min-width: 750px;
+				white-space: nowrap;
+			}
+			.titlesRow {
+				white-space: nowrap;
+			}
+			.day_column {
+
+			}
+			body{
+				font-family: "adventpro-light";
+			    height:100%; /* force the BODY element to match the height of the HTML element */
+			    /*overflow-x: hidden;*/
+			}
+        	.box {
+        		background-color: #EFF5FB;
+        		padding: 4px;
+        		/*position: relative;
+        		height: 100%;*/
+        	}
+        	.row {
+        		/*height: 100vh;*/
+        	}
+        	.sunday {
+        		background-color: #FBEFEF;
+        	}
+        	.time_column, .time_column_data {
+				width: calc(12.5% - 0.25% - 7%);
+				height: 100%;
+				background-color: #FAFAFA;
+				position: relative;
+				z-index: 100;
+				left: 16px;
+        	}
+        	.day_column, .day_column_data {
+        		position: relative;
+				width: calc(12.5% - 0.25% + 1%);
+
+        	}
+        	.time_column, .day_column {
+        		height: 40px;
+        		overflow: hidden;
+        	}
+        	@media (max-width: 750px) {
+				/* CSS that should be displayed if width is equal to or less than 800px goes here */
+        		.time_column, .time_column_data {
+					width: 50px;
+        		}
+				.day_column, .day_column_data {
+					width: 100px;
+				}
+        	}
+        	.day_column, .time_column, .day_column_data {
+        		text-align: center;
+        		/*margin: .1%;*/
+        		/*padding-top: 5px;*/
+        		/*padding-bottom: 5px;*/
+        	}
+        	.line {
+        		margin-top: 60px;
+        		margin-bottom: 60px;
+        	}
+        	.titles {
+        		position: absolute;
+        		width: 100%;
+        		z-index: 100;
+        	}
+        	#times {
+        		position: relative;
+        		z-index: 99;
+        		background-color: #FAFAFA;
+        		text-align: center;
+        	}
+        	.information {
+        		padding-top: 40px;
+        	}
+        	.time_column, .timetitle {
+        		background-color: #E6E6E6;
+        	}
+        	.day_column_data {
+        		background-color: #E6E6E6;
+        	}
+			.day_column_data:nth-of-type(odd) {
+				background-color: #F2F2F2;
+			}
+			.data {
+				position: absolute;
+				background-color: #BCF5A9;
+				width: 100%;
+				border-radius: 4px;
+			}
+			.day_column {
+				display: inline-block;
+			}
+			.margin16 {
+				margin-left: 16px;
+			}
+			.box {
+				font-size: 16px;
+			}
+			.date {
+				font-size: 12px;
+			}
+			.startItem {
+				font-size: 12px;
+			}
+			.actionItem {
+				font-size: 16px;
+				font-weight: bold;
+			}
+			.responsibleItem {
+				font-size: 12px;
+			}
+        </style>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Add your site or application content here -->
+        <div id="container">
+	        <div class="titles">
+		        <div class="row titlesRow">
+		   		    <div class="time_column">
+				        <div class="box timetitle">
+				            TIME
+				        </div>
+				    </div>
+				    <div class="day_column margin16">
+				        <div class="box">
+				            Maanantai<br /><span class="date"></span>
+				        </div>
+				    </div>
+				    <div class="day_column">
+				        <div class="box">
+				            Tiistai<br /><span class="date"></span>
+				        </div>
+				    </div>
+				    <div class="day_column">
+				        <div class="box">
+				            Keskiviikko<br /><span class="date"></span>
+				        </div>
+				    </div>
+				    <div class="day_column">
+				        <div class="box">
+				            Torstai<br /><span class="date"></span>
+				        </div>
+				    </div>
+				    <div class="day_column">
+				        <div class="box">
+				            Perjantai<br /><span class="date"></span>
+				        </div>
+				    </div>
+				    <div class="day_column">
+				        <div class="box">
+				            Lauantai<br /><span class="date"></span>
+				        </div>
+				    </div>
+		   		    <div class="day_column">
+				        <div class="box sunday">
+				            Sunnuntai<br /><span class="date"></span>
+				        </div>
+				    </div>
+				</div>
+			</div>
+			<div class="information">
+				<div class="row">
+		   		    <div id="times" class="time_column_data" style="">
+	   		    	    <div class="line">8<br />-<br />10</div>
+				        <hr />
+				        <div class="line">10<br />-<br />12</div>
+				        <hr />
+				        <div class="line">12<br />-<br />14</div>
+				        <hr />
+				        <div class="line">14<br />-<br />16</div>
+				        <hr />
+				        <div class="line">16<br />-<br />18</div>
+				        <hr />
+				        <div class="line">18<br />-<br />20</div>
+				        <hr />
+				        <div class="line">20<br />-<br />22</div>
+				        <hr />
+				    </div>
+
+				    <div id="mo" class="day_column_data margin16">
+							Maanantai
+							<!-- <div class="data">This is sample <input id="first" type="number" value="2" /><button class="butt js--triggerAnimation" onclick="responsiveVoice.speak('Tähän tulee generoitu teksti', 'Finnish Female', {volume: 1});" type="button" value="Play">Play</button></div> -->
+				    </div>
+				    <div id="tu" class="day_column_data">
+				            Tiistai
+				    </div>
+				    <div id="we" class="day_column_data">
+				            Keskiviikko
+				    </div>
+				    <div id="th" class="day_column_data">
+				            Torstai
+				    </div>
+				    <div id="fr" class="day_column_data">
+				            Perjantai
+				    </div>
+				    <div id="sa" class="day_column_data">
+				            Lauantai
+				    </div>
+		   		    <div id="su" class="day_column_data">
+				            Sunnuntai
+				    </div>
+				</div>
+			</div>
+		</div>
+
+
+        <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.4.min.js"><\/script>')</script>
+
+        <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+        <script>
+            window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
+            ga('create','UA-XXXXX-Y','auto');ga('send','pageview')
+        </script>
+        <script src="https://www.google-analytics.com/analytics.js" async defer></script>
+        <script type="text/javascript">
+        	$(document).ready(function() {
+        		// console.log($('.day_column_data').height()/7);
+        		// console.log($('.line').height());
+        		var slotSize = 340/2;//60 + $('.line').height();
+        		var slot = $('#first').val()-1;
+        		$('.data').css({'top': 'calc(('+slotSize+'px * '+slot+')'});
+        		$("#first").change(function () {
+        			slot = $('#first').val()-1;
+        			$('.data').css({'top': 'calc(('+slotSize+'px * '+slot+')'});
+        		});
+        		window.onresize = function(event) {
+				    $('.day_column').css({'width': $('.day_column_data').width()+'px'});
+				    $('.time_column').css({'width': $('.time_column_data').width()+'px'});
+				};
+				var lastScrollLeft = 0;
+				$(window).scroll(function(event) {
+					var sl = $(this).scrollLeft();
+					var st = $(this).scrollTop();
+					if (sl > lastScrollLeft){
+					   // downscroll code
+					   // console.log('right');
+					   $('#times').css({'left': sl+16+'px'});
+					} else if (sl < lastScrollLeft) {
+					  // upscroll code
+					  // console.log('left');
+					  $('#times').css({'left': sl+16+'px'});
+					} else {
+						// console.log('up/down:');
+						$('.titles').css({'top': st+'px'});
+					}
+		            lastScrollLeft = sl;
+				});
+				var voicelist = responsiveVoice.getVoices();
+				// console.log(voicelist);
+				fetchUserData(12567890);
+        	});
+        	function fetchUserData(user_id) {
+        		// http://198.61.227.138/Webdemohealth/Calendar?id=12567890 
+				// http://198.61.227.138/Webdemohealth/Calendar?id=12312345 
+				var json = "";
+				if (user_id == '12567890') {
+					json = jsondata;
+				} else if (user_id == '12312345') {
+					json = jsondata2;
+				}
+				// console.log(json.actions[0]);
+				var w = 0;
+				$.each( json.actions[0], function( key, value ) {
+					var slotSize = 340/2;
+					if (w == 0) {
+						// Monday
+						drawdate(w, key);
+						for (var i = 0; i < value.length; i++) {
+							var slot = parseInt(value[i].start);
+							if (!isNaN(slot)) {
+								var hour = slot;
+								var specify = value[i].start.split(":")[1];
+								var minute = specify;
+								slot = setPositionAccordingToTime(slot, specify);
+								var style = 'top: calc('+slotSize+'px * '+slot+')';
+								makeItem("#mo", style, value[i].start, value[i].action, value[i].responsible, hour, minute);
+							}
+						}
+					} else if (w == 1) {
+						// Tuesday
+						drawdate(w, key);
+						for (var i = 0; i < value.length; i++) {
+							var slot = parseInt(value[i].start);
+							if (!isNaN(slot)) {
+								var hour = slot;
+								var specify = value[i].start.split(":")[1];
+								var minute = specify;
+								slot = setPositionAccordingToTime(slot, specify);
+								var style = 'top: calc('+slotSize+'px * '+slot+')';
+								makeItem("#tu", style, value[i].start, value[i].action, value[i].responsible, hour, minute);
+							}
+						}
+
+					} else if (w == 2) {
+						// Wednesday
+						drawdate(w, key);
+						for (var i = 0; i < value.length; i++) {
+							var slot = parseInt(value[i].start);
+							if (!isNaN(slot)) {
+								var hour = slot;
+								var specify = value[i].start.split(":")[1];
+								var minute = specify;
+								slot = setPositionAccordingToTime(slot, specify);
+								var style = 'top: calc('+slotSize+'px * '+slot+')';
+								makeItem("#we", style, value[i].start, value[i].action, value[i].responsible, hour, minute);
+							}
+						}
+
+					} else if (w == 3) {
+						// Thursday
+						drawdate(w, key);
+						for (var i = 0; i < value.length; i++) {
+							var slot = parseInt(value[i].start);
+							if (!isNaN(slot)) {
+								var hour = slot;
+								var specify = value[i].start.split(":")[1];
+								var minute = specify;
+								slot = setPositionAccordingToTime(slot, specify);
+								var style = 'top: calc('+slotSize+'px * '+slot+')';
+								makeItem("#th", style, value[i].start, value[i].action, value[i].responsible, hour, minute);
+							}
+						}
+
+					} else if (w == 4) {
+						// Friday
+						drawdate(w, key);
+						for (var i = 0; i < value.length; i++) {
+							var slot = parseInt(value[i].start);
+							if (!isNaN(slot)) {
+								var hour = slot;
+								var specify = value[i].start.split(":")[1];
+								var minute = specify;
+								slot = setPositionAccordingToTime(slot, specify);
+								var style = 'top: calc('+slotSize+'px * '+slot+')';
+								makeItem("#fr", style, value[i].start, value[i].action, value[i].responsible, hour, minute);
+							}
+						}
+
+					} else if (w == 5) {
+						// Saturday
+						drawdate(w, key);
+						for (var i = 0; i < value.length; i++) {
+							var slot = parseInt(value[i].start);
+							if (!isNaN(slot)) {
+								var hour = slot;
+								var specify = value[i].start.split(":")[1];
+								var minute = specify;
+								slot = setPositionAccordingToTime(slot, specify);
+								var style = 'top: calc('+slotSize+'px * '+slot+')';
+								makeItem("#sa", style, value[i].start, value[i].action, value[i].responsible, hour, minute);
+							}
+						}
+
+					} else if (w == 6) {
+						// Sunday
+						drawdate(w, key);
+						for (var i = 0; i < value.length; i++) {
+							var slot = parseInt(value[i].start);
+							if (!isNaN(slot)) {
+								var hour = slot;
+								var specify = value[i].start.split(":")[1];
+								var minute = specify;
+								slot = setPositionAccordingToTime(slot, specify);
+								var style = 'top: calc('+slotSize+'px * '+slot+')';
+								makeItem("#su", style, value[i].start, value[i].action, value[i].responsible, hour, minute);
+							}
+						}
+
+					} else {
+						alert('false day');
+					}
+					
+					w++;
+				});
+			}
+			function drawdate(w, key) {
+				// $('.date')[w].empty();
+				$('.date')[w].append(key);
+			}
+
+			function makeItem(day, style, start, action, responsible, hour, minute) {
+				$(day).append('<div class="data" style="'+style+'"><span class="startItem">'+start+'</span><br /><span class="actionItem">'+action+'</span><br /><span class="responsibleItem">'+responsible+'</span><br /><button class="butt js--triggerAnimation" onclick="responsiveVoice.speak(\'Kello '+hour+' '+minute+' . '+action+'\', \'Finnish Female\', {volume: 1});" type="button" value="Play">Play</button></div>');
+			}
+			function setPositionAccordingToTime(slotOld, specify) {
+				if (slotOld >= 8 && slotOld < 10) {
+					slot = 0;
+					if (slotOld >= 9) {
+						slot += 0.5;
+					}
+					if (specify >= 0 && specify < 15) {
+						slot += 0;
+					} else if (specify >= 15 && specify < 30) {
+						slot += 0.125;
+					} else if (specify >= 30 && specify < 45) {
+						slot += 0.125*2;
+					} else if (specify >= 45 && specify <= 59) {
+						slot += 0.125*3;
+					}
+				} else if (slotOld >= 10 && slotOld < 12) {
+					slot = 1;
+					if (slotOld >= 11) {
+						slot += 0.5;
+					}
+					if (specify >= 0 && specify < 15) {
+						slot += 0;
+					} else if (specify >= 15 && specify < 30) {
+						slot += 0.125;
+					} else if (specify >= 30 && specify < 45) {
+						slot += 0.125*2;
+					} else if (specify >= 45 && specify <= 59) {
+						slot += 0.125*3;
+					}
+				} else if (slotOld >= 12 && slotOld < 14) {
+					slot = 2;
+					if (slotOld >= 13) {
+						slot += 0.5;
+					}
+					if (specify >= 0 && specify < 15) {
+						slot += 0;
+					} else if (specify >= 15 && specify < 30) {
+						slot += 0.125;
+					} else if (specify >= 30 && specify < 45) {
+						slot += 0.125*2;
+					} else if (specify >= 45 && specify <= 59) {
+						slot += 0.125*3;
+					}
+				} else if (slotOld >= 14 && slotOld < 16) {
+					slot = 3;
+					if (slotOld >= 15) {
+						slot += 0.5;
+					}
+					if (specify >= 0 && specify < 15) {
+						slot += 0;
+					} else if (specify >= 15 && specify < 30) {
+						slot += 0.125;
+					} else if (specify >= 30 && specify < 45) {
+						slot += 0.125*2;
+					} else if (specify >= 45 && specify <= 59) {
+						slot += 0.125*3;
+					}
+				} else if (slotOld >= 16 && slotOld < 18) {
+					slot = 4;
+					if (slotOld >= 17) {
+						slot += 0.5;
+					}
+					if (specify >= 0 && specify < 15) {
+						slot += 0;
+					} else if (specify >= 15 && specify < 30) {
+						slot += 0.125;
+					} else if (specify >= 30 && specify < 45) {
+						slot += 0.125*2;
+					} else if (specify >= 45 && specify <= 59) {
+						slot += 0.125*3;
+					}
+				} else if (slotOld >= 18 && slotOld < 20) {
+					slot = 5;
+					if (slotOld >= 19) {
+						slot += 0.5;
+					}
+					if (specify >= 0 && specify < 15) {
+						slot += 0;
+					} else if (specify >= 15 && specify < 30) {
+						slot += 0.125;
+					} else if (specify >= 30 && specify < 45) {
+						slot += 0.125*2;
+					} else if (specify >= 45 && specify <= 59) {
+						slot += 0.125*3;
+					}
+				} else if (slotOld >= 20 && slotOld < 22) {
+					slot = 6;
+					if (slotOld >= 21) {
+						slot += 0.5;
+					}
+					if (specify >= 0 && specify < 15) {
+						slot += 0;
+					} else if (specify >= 15 && specify < 30) {
+						slot += 0.125;
+					} else if (specify >= 30 && specify < 45) {
+						slot += 0.125*2;
+					} else if (specify >= 45 && specify <= 59) {
+						slot += 0.125*3;
+					}
+				}
+				return slot;
+			}
+        </script>
+    </body>
+</html>

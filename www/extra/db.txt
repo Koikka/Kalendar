@@ -1,0 +1,50 @@
+CREATE DATABASE kuntke;
+
+CREATE TABLE kuntke.varaus(
+      id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      sotu CHAR(11) NULL,
+      dpvm DATE NULL,
+      alkuaika CHAR(5) NULL,
+      loppuaika CHAR(5) NULL,
+      hknro CHAR(6) NULL,
+      hoitotunn CHAR(8) NULL,
+      selite CHAR(100) NULL,
+      atyyppi CHAR(1) NULL,
+      odotila CHAR(30) NULL,
+      vtieto1 CHAR(60) NULL,
+      vtieto2 CHAR(60) NULL,
+      vtieto3 CHAR(250) NULL,
+      vtieto4 CHAR(60) NULL
+);
+
+CREATE TABLE kuntke.asiakas(
+      id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      asotu CHAR(11) NULL,
+      animi CHAR(100) NULL
+);
+
+CREATE TABLE kuntke.resurssi(
+      id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      resnro CHAR(6) NULL,
+      resnimi CHAR(50) NULL,
+      ammatti CHAR(20) NULL,
+      resodotila CHAR(30) NULL
+);
+
+CREATE TABLE kuntke.hoidot(
+      id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      hoitotunn CHAR(8) NULL,
+      hoitonimi CHAR(60) NULL,
+      hoitotyyp CHAR(1) NULL,
+      ennakkotp CHAR(10) NULL,
+      nimiasille CHAR(30) NULL
+);
+
+JOIN asiakas ON asiakas.asotu=varaus.sotu 
+JOIN resurssi ON resurssi.resnro=varaus.hknro
+JOIN hoidot ON hoidot.hoitotunn=varaus.hoitotunn
+
+drop table kuntke.varaus;
+drop table kuntke.asiakas;
+drop table kuntke.hoidot;
+drop table kuntke.resurssi;

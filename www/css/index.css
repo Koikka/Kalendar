@@ -1,0 +1,356 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+#app {
+    display: none;
+}
+#day, #week {
+    display: none;
+}
+#login {
+    display: block;
+    overflow: hidden;
+    text-align: center;
+}
+#logout {
+    position: fixed;
+    right: 0px;
+    bottom: 0px;
+}
+@import url('https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:700');
+@font-face {
+    font-family: "adventpro-extralight";
+    src: url(fonts/advent-pro/adventpro-extralight.ttf);
+}
+@font-face {
+    font-family: "adventpro-light";
+    src: url(fonts/advent-pro/adventpro-light.ttf);
+}
+@font-face {
+    font-family: "adventpro-medium";
+    src: url(fonts/advent-pro/adventpro-medium.ttf);
+}
+#clockD, #clockW {
+    position: absolute;
+    height: 3px;
+    background-color: red;
+    width: 100%;
+    margin-top: -2px;
+    z-index: 4;
+}
+#clockD {
+  width: calc(100% - 60px);
+}
+.titles {
+    min-width: 750px;
+    white-space: nowrap;
+}
+.titlesRow, .dataRow {
+    white-space: nowrap;
+}
+.day_column {
+
+}
+body{
+    /*font-family: "adventpro-light";*/
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    text-rendering: optimizeLegibility;
+    -webkit-appearance: carret;
+    -webkit-appearance: none;
+    -webkit-box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
+     /* force the BODY element to match the height of the HTML element */
+    /*overflow-x: hidden;*/
+}
+.day_column {
+    background-color: #EFF5FB;
+}
+.box {
+    /*background-color: #EFF5FB;*/
+    background-color: #00B0CA;
+    color: white;
+    padding: 4px;
+    /*position: relative;
+    height: 100%;*/
+}
+.row {
+    /*height: 100vh;*/
+}
+.sunday {
+    background-color: #E56942;/*#FBEFEF;*/
+}
+.time_column, .time_column_data {
+    width: calc(12.5% - 0.25% - 7%);
+    height: 100%;
+    background-color: #FAFAFA;
+    position: relative;
+    z-index: 100;
+    left: 16px;
+}
+.day_column, .day_column_data {
+    position: relative;
+    width: calc(12.5% - 0.25% + 1%);
+
+}
+.time_column, .day_column {
+    height: 40px;
+    overflow: hidden;
+}
+@media (max-width: 750px) {
+    /* CSS that should be displayed if width is equal to or less than 800px goes here */
+    .time_column, .time_column_data {
+        width: 50px;
+    }
+    .day_column, .day_column_data {
+        width: 100px;
+    }
+}
+.day_column, .time_column, .day_column_data {
+    text-align: center;
+    /*margin: .1%;*/
+    /*padding-top: 5px;*/
+    /*padding-bottom: 5px;*/
+}
+.line {
+    margin-top: 60px;
+    margin-bottom: 60px;
+    /*font-size: 26px;*/
+    font-weight: 400;
+}
+.titles {
+    position: absolute;
+    width: 100%;
+    z-index: 100;
+}
+#times {
+    position: relative;
+    z-index: 99;
+    background-color: #00B0CA;/*#FAFAFA;*/
+    color: white;
+    text-align: center;
+}
+.information {
+    padding-top: 40px;
+}
+.time_column, .timetitle {
+    background-color: #00B0CA;/*#E6E6E6;*/
+}
+.day_column_data {
+    background-color: #E6E6E6;
+    overflow: hidden;
+    /*height: 1190px;*/
+    /*top: -1112px;*/
+}
+.day_column_data:nth-of-type(odd) {
+    background-color: #F2F2F2;
+}
+.data {
+    position: absolute;
+    background-color: #48dc82;/*#BCF5A9;*/
+    border: 3px solid;
+    border-color: #1C934A;
+    width: 100%;
+    border-radius: 4px;
+}
+.day_column, .day_column_data, .time_column_data, .time_column {
+    display: inline-block;
+}
+.hour_line {
+    position: absolute;
+    width: 100%;
+    border: solid #cccccc 1px;
+}
+.margin16 {
+    margin-left: 16px;
+}
+.box {
+    font-size: 16px;
+}
+.date {
+    font-size: 12px;
+}
+.startItem {
+    font-size: 12px;
+}
+.actionItem {
+    font-size: 16px;
+    font-weight: bold;
+}
+.responsibleItem {
+    font-size: 12px;
+    white-space: normal !important;
+}
+#day {
+    background-color: whitesmoke;
+    width: 100%;
+    overflow-x: hidden !important;
+}
+#dateinfo {
+    width: 100%;
+    overflow-x: hidden !important;
+    height: 60px;
+    background-color: #00B0CA;/*whitesmoke;*/
+    color: white;
+    text-align: center;
+    font-size: 35px;
+    line-height: 1.9;
+}
+#daycontainer {
+    display: flex;
+}
+#daytime {
+    /*flex: 1;*/
+    text-align: center;
+    width: 60px;
+    background-color: #00B0CA;/*whitesmoke;*/
+    color: white;
+    float: left;
+}
+#dayinfo {
+    /*flex: 1;*/
+    background-color: white;
+    width: calc(100% - 60px);
+    float: left;
+}
+
+
+
+
+
+
+
+
+
+
+/* LOGIN RADIO */
+/* One radio button per line */
+label {
+  display: block;
+  cursor: pointer;
+  line-height: 2.5;
+  font-size: 1.5em;
+  font-family: "adventpro-medium";
+  text-align: left;
+  margin-left: 20px;
+}
+
+[type="radio"] + span {
+  display: block;
+}
+
+/* the basic, unchecked style */
+[type="radio"] + span:before {
+  content: '';
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.25em;
+  border-radius: 1em;
+  border: 0.125em solid #fff;
+  box-shadow: 0 0 0 0.15em rgb(92,93,96);
+  margin-right: 0.75em;
+  transition: 0.5s ease all;
+}
+
+/* the checked style using the :checked pseudo class */
+[type="radio"]:checked + span:before {
+  background: rgb(28,147,74);
+  box-shadow: 0 0 0 0.25em rgb(92,93,96);
+}
+
+/* never forget focus styling */
+[type="radio"]:focus + span:after {
+  content: '\0020\2190';
+  font-size: 1.5em;
+  line-height: 1;
+  vertical-align: -0.125em;
+}
+[type="radio"] + span {
+    color: rgb(92,93,96);
+}
+/* Nothing to see here. */
+#login {
+  margin: 1em auto;
+  max-width: 30em;
+  font-family: Cabin, serif;
+  padding: 10px;
+}
+
+#login fieldset {
+  font-size: 1em;
+  border: 2px solid #000;
+  padding: 2em;
+  border-radius: 0.5em;
+}
+
+legend {
+  color: #fff;
+  background: rgb(92,93,96);
+  padding: 0.25em 0.25em;
+  border-radius: 3px;
+  font-size: 30px;
+  font-family: "adventpro-medium";
+}
+#logos {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-bottom: 8px;
+  /*bottom: -40px;*/
+}
+#logos img:first-of-type {
+  float: right;
+  max-width: 315px;
+  max-height: 120px;
+}
+/*#logos img:first-of-type {
+  float: right;
+  z-index: 1;
+  max-width: 315px;
+  max-height: 120px;
+}
+#logos img:nth-of-type(2) {
+  float: right;
+  position: relative;
+  top: -40px;
+  margin-right: 20px;
+  z-index: 20;
+  max-width: 175px;
+  max-height: 61px;
+}*/
+#login .p {
+  text-align: center;
+  font-size: 14px;
+  padding-top: 120px;
+}
+#dayview, #weekview {
+    display: none;
+}
+#dayview span {
+    width: 280px;
+}
+#weekview span {
+    width: 300px;
+}
+
+
+
+
+
+
+

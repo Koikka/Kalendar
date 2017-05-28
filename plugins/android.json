@@ -1,0 +1,21 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "fi.samk.calendar"
+        },
+        "phonegap-nfc": {
+            "PACKAGE_NAME": "fi.samk.calendar"
+        },
+        "cordova-plugin-globalization": {
+            "PACKAGE_NAME": "fi.samk.calendar"
+        }
+    },
+    "dependent_plugins": {}
+}

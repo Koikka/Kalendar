@@ -1,0 +1,122 @@
+{
+    calname: "Matti Kokkola",
+    23.01 .2017: [{
+        day: "Maanantai",
+        start: "10:15:00",
+        end: "11:00:00",
+        action: "Jumppa",
+        place: "Sali 1",
+        responsible: "Jaana Jumppari"
+    }, {
+        day: "Maanantai",
+        start: "11:15:00",
+        end: "13:00:00",
+        action: "Ruokailu",
+        place: "-",
+        responsible: "-"
+    }, {
+        day: "Maanantai",
+        start: "13:15:00",
+        end: "14:00:00",
+        action: "Oikea ruokavalio",
+        place: "Luentosali 1",
+        responsible: "Taina Taikina"
+    }, {
+        day: "Maanantai",
+        start: "14:15:00",
+        end: "15:30:00",
+        action: "Lihashuolto",
+        place: "Luentosali 2",
+        responsible: "Matti Meikäläinen"
+    }],
+    24.01 .2017: [{
+        day: "Tiistai",
+        start: "10:15:00",
+        end: "11:30:00",
+        action: "Jumppa",
+        place: "Sali 2",
+        responsible: "Jaana Jumppari"
+    }, {
+        day: "Tiistai",
+        start: "11:45:00",
+        end: "13:00:00",
+        action: "Ruokailu",
+        place: "-",
+        responsible: "-"
+    }, {
+        day: "Tiistai",
+        start: "13:15:00",
+        end: "14:00:00",
+        action: "Lääkäri",
+        place: "Vastaanotto 2",
+        responsible: "Lääk. Kauko Kattila"
+    }, {
+        day: "Tiistai",
+        start: "14:15:00",
+        end: "15:30:00",
+        action: "Lihashuolto jatko",
+        place: "Luentosali 2",
+        responsible: "Matti Meikäläinen"
+    }],
+    25.01 .2017: [{
+        day: "Keskiviikko",
+        start: "10:15:00",
+        end: "11:30:00",
+        action: "Jumppa",
+        place: "Sali 2",
+        responsible: "Jaana Jumppari"
+    }, {
+        day: "Keskiviikko",
+        start: "11:45:00",
+        end: "13:00:00",
+        action: "Ruokailu",
+        place: "-",
+        responsible: "-"
+    }, {
+        day: "Keskiviikko",
+        start: "13:15:00",
+        end: "14:00:00",
+        action: "Oikea aamupala",
+        place: "Luentosali 2",
+        responsible: "Raija Ravitsemus"
+    }, {
+        day: "Keskiviikko",
+        start: "14:15:00",
+        end: "15:30:00",
+        action: "Lihashuolto jatko",
+        place: "Luentosali 2",
+        responsible: "Matti Meikäläinen"
+    }],
+    26.01 .2017: [{
+        day: "Torstai",
+        start: "",
+        end: "",
+        action: "",
+        place: "",
+        responsible: ""
+    }],
+    27.01 .2017: [{
+        day: "Perjantai",
+        start: "",
+        end: "",
+        action: "",
+        place: "",
+        responsible: ""
+    }],
+    28.01 .2017: [{
+        day: "Lauantai",
+        start: "",
+        end: "",
+        action: "",
+        place: "",
+        responsible: ""
+    }],
+    29.01 .2017: [{
+        day: "Sunnuntai",
+        start: "",
+        end: "",
+        action: "",
+        place: "",
+        responsible: ""
+    }]
+}
