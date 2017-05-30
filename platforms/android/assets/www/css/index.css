@@ -57,7 +57,7 @@
   width: calc(100% - 60px);
 }
 .titles {
-    min-width: 750px;
+    min-width: 1024px;/*750px;*/
     white-space: nowrap;
 }
 .titlesRow, .dataRow {
@@ -111,13 +111,14 @@ body{
     height: 40px;
     overflow: hidden;
 }
-@media (max-width: 750px) {
+@media (max-width: 1024px) {
     /* CSS that should be displayed if width is equal to or less than 800px goes here */
     .time_column, .time_column_data {
         width: 50px;
     }
     .day_column, .day_column_data {
-        width: 100px;
+        /*width: 100px;*/
+        width: 141px;
     }
 }
 .day_column, .time_column, .day_column_data {
@@ -163,9 +164,17 @@ body{
     position: absolute;
     background-color: #48dc82;/*#BCF5A9;*/
     border: 3px solid;
-    border-color: #1C934A;
+    border-color: #5C5D60;/*#1C934A;*/
     width: 100%;
     border-radius: 4px;
+    padding: 2px;
+    white-space: normal !important;
+    overflow: hidden;
+}
+.data img {
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
 .day_column, .day_column_data, .time_column_data, .time_column {
     display: inline-block;

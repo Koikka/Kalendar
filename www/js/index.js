@@ -95,9 +95,38 @@ var app = {
         $('.date'+w).append(key);
     },
 
-    makeItem: function(day, style, start, end, action, responsible, hour, minute) {
+    makeItem: function(day, style, start, end, action, responsible, hour, minute, tag, date) {
         console.log(day +" - "+ action);
-        $(day).append('<div class="data" style="'+style+'"><span class="startItem">'+start+' - '+end+'</span><br /><span class="actionItem">'+action+'</span><br /><span class="responsibleItem">'+(typeof responsible.name == 'undefined' ? "" : responsible.name+", ")+'<i>'+(typeof responsible.profession == 'undefined' ? "" : responsible.profession)+'</i></span><br /><img src="./img/speaker.png" width="30px" height="30px" onclick="responsiveVoice.speak(\'Kello '+hour+' '+minute+' . '+action+'\', \'Finnish Female\', {volume: 1});" style="float: right; margin-right: 4px; margin-bottom: 2px;" /></div>');
+        var color = "";
+        if (tag == 'RTULO' || tag == 'RKUNTO' || tag == 'RULKO' || tag == 'RPSYKO' || tag == 'RTOIMI') {
+            // sininen
+            // color = '#00B0CA';
+            color = '#8ff1ff';
+        } else if (tag == 'TULOHAAS') {
+            // keltainen
+            // color = '#ffd500';
+            color = '#ffec89';
+        } else if (tag == 'LOUNAS' || tag == 'VAPAINFO') {
+            // valkoinen
+            color = '#fbfbfb';
+        } else {
+            // vihreä default
+            color = '#48dc82';
+        }
+        var ms = moment(end,"HH:mm").diff(moment(start,"HH:mm"));
+        var d = moment.duration(ms);
+        
+        var h = ((parseFloat(d*1.0)/1000)/3600)*(340/2);
+        var string_date = date+' '+hour+':'+minute;
+        var d1 = Date.parse(moment().format('YYYY-MM-DD HH:mm'));
+        var d2 = Date.parse(string_date);
+        if (d1 < d2) {
+            $(day).append('<div class="data" style="'+style+' height: '+h+'px; background-color: '+color+'"><span class="startItem">'+start+' - '+end+'</span><br /><span class="actionItem">'+action+'</span><br /><span class="responsibleItem">'+(typeof responsible.name == 'undefined' ? "" : responsible.name+", ")+'<i>'+(typeof responsible.profession == 'undefined' ? "" : responsible.profession)+'</i></span><br /><img src="./img/speaker_but.png" width="30px" height="30px" onclick="responsiveVoice.speak(\'Kello '+hour+' '+minute+' . '+action+'\', \'Finnish Female\', {volume: 1});" style="float: right; margin-right: 4px; margin-bottom: 2px;" /></div>');
+        } else {
+            $(day).append('<div class="data" style="'+style+' height: '+h+'px; background-color: '+color+'; opacity: 0.5;"><span class="startItem">'+start+' - '+end+'</span><br /><span class="actionItem">'+action+'</span><br /><span class="responsibleItem">'+(typeof responsible.name == 'undefined' ? "" : responsible.name+", ")+'<i>'+(typeof responsible.profession == 'undefined' ? "" : responsible.profession)+'</i></span><br /><img src="./img/speaker_but.png" width="30px" height="30px" onclick="responsiveVoice.speak(\'Kello '+hour+' '+minute+' . '+action+'\', \'Finnish Female\', {volume: 1});" style="float: right; margin-right: 4px; margin-bottom: 2px;" /></div>');
+        }
+
+
     },
     ajax: function(id_no) {
         app.nfcOn = false;
@@ -160,19 +189,26 @@ var app = {
             for (var i = 0; i < days.length; i++) {
                 console.log(msg[days[i]] + ' - ' + days[i]);
                 if (days[i] == moment(moment().isoWeekday(1)._d).format('YYYY-MM-DD')) {
-                    app.setData(msg[days[i]], 0, days[i]);    
+                    if (typeof msg[days[i]] != "undefined")
+                        app.setData(msg[days[i]], 0, days[i]);
                 } else if (days[i] == moment(moment().isoWeekday(2)._d).format('YYYY-MM-DD')) {
-                    app.setData(msg[days[i]], 1, days[i]);    
+                    if (typeof msg[days[i]] != "undefined")
+                        app.setData(msg[days[i]], 1, days[i]);
                 } else if (days[i] == moment(moment().isoWeekday(3)._d).format('YYYY-MM-DD')) {
-                    app.setData(msg[days[i]], 2, days[i]);    
+                    if (typeof msg[days[i]] != "undefined")
+                        app.setData(msg[days[i]], 2, days[i]);
                 } else if (days[i] == moment(moment().isoWeekday(4)._d).format('YYYY-MM-DD')) {
-                    app.setData(msg[days[i]], 3, days[i]);    
+                    if (typeof msg[days[i]] != "undefined")
+                        app.setData(msg[days[i]], 3, days[i]);
                 } else if (days[i] == moment(moment().isoWeekday(5)._d).format('YYYY-MM-DD')) {
-                    app.setData(msg[days[i]], 4, days[i]);    
+                    if (typeof msg[days[i]] != "undefined")
+                        app.setData(msg[days[i]], 4, days[i]);
                 } else if (days[i] == moment(moment().isoWeekday(6)._d).format('YYYY-MM-DD')) {
-                    app.setData(msg[days[i]], 5, days[i]);
-                } else {
-                    app.setData(msg[days[i]], 6, days[i]);
+                    if (typeof msg[days[i]] != "undefined")
+                        app.setData(msg[days[i]], 5, days[i]);
+                } else if (days[i] == moment(moment().isoWeekday(7)._d).format('YYYY-MM-DD')) {
+                    if (typeof msg[days[i]] != "undefined")
+                        app.setData(msg[days[i]], 6, days[i]);
                 }
             }
         });
@@ -192,7 +228,7 @@ var app = {
             $('#login').css({'display': 'none'});
             $('#app').css({'display': 'block'});
             $('#week').css({'display': 'block'});
-            $('#app').css({'min-width': '750px', 'height':'1190px'});
+            $('#app').css({'min-width': '1024px', 'height':'1190px'});
         }
         app.drawHourLine();
         for (var i = 0; i < 7; i++) {
@@ -226,16 +262,25 @@ var app = {
                     var specify = value[i].start.split(":")[1];
                     var minute = specify;
                     var style = "";
+
+                    var getSlot = ['08','09','10','11','12','13','14','15','16','17','18','19','20','21','22'];
+                    var z = 0;
+                    if (hour >= 8 && hour <= 22) {
+                        z = getSlot.indexOf(hour.toString());
+                    } else {
+                        z = -1;
+                    }
                     if (app.dayWeek == 'day') {
+
                         slot = app.setClockPosition(slot, specify);
-                        style = 'top: calc('+slotSize*slot+'px + 60px); width: calc(100% - 60px);';
+                        style = 'top: calc('+slotSize*slot+'px + 60px - '+parseInt(2+z)+'px); width: calc(100% - 60px);';
                     } else {
                         // slot = app.setPositionAccordingToTime(slot, specify);
                         slot = app.setClockPosition(slot, specify);
-                        style = 'top: calc('+slotSize+'px * '+slot+')';
+                        style = 'top: calc('+slotSize+'px * '+slot+' - '+parseInt(2+z)+'px);';
                     }
 
-                    app.makeItem("#mo", style, value[i].start, value[i].end, value[i].action_general, value[i].responsible, hour, minute);
+                    app.makeItem("#mo", style, value[i].start, value[i].end, value[i].action_general, value[i].responsible, hour, minute, value[i].action, key);
                 }
             }
         } else if (w == 1) {
@@ -248,16 +293,25 @@ var app = {
                     var specify = value[i].start.split(":")[1];
                     var minute = specify;
                     var style = "";
+
+                    var getSlot = ['08','09','10','11','12','13','14','15','16','17','18','19','20','21','22'];
+                    var z = 0;
+                    if (hour >= 8 && hour <= 22) {
+                        z = getSlot.indexOf(hour.toString());
+                    } else {
+                        z = -1;
+                    }
                     if (app.dayWeek == 'day') {
+
                         slot = app.setClockPosition(slot, specify);
-                        style = 'top: calc('+slotSize*slot+'px + 60px); width: calc(100% - 60px);';
+                        style = 'top: calc('+slotSize*slot+'px + 60px - '+parseInt(2+z)+'px); width: calc(100% - 60px);';
                     } else {
                         // slot = app.setPositionAccordingToTime(slot, specify);
                         slot = app.setClockPosition(slot, specify);
-                        style = 'top: calc('+slotSize+'px * '+slot+')';
+                        style = 'top: calc('+slotSize+'px * '+slot+' - '+parseInt(2+z)+'px);';
                     }
 
-                    app.makeItem("#tu", style, value[i].start, value[i].end, value[i].action_general, value[i].responsible, hour, minute);
+                    app.makeItem("#tu", style, value[i].start, value[i].end, value[i].action_general, value[i].responsible, hour, minute, value[i].action, key);
                 }
             }
 
@@ -271,16 +325,25 @@ var app = {
                     var specify = value[i].start.split(":")[1];
                     var minute = specify;
                     var style = "";
+
+                    var getSlot = ['08','09','10','11','12','13','14','15','16','17','18','19','20','21','22'];
+                    var z = 0;
+                    if (hour >= 8 && hour <= 22) {
+                        z = getSlot.indexOf(hour.toString());
+                    } else {
+                        z = -1;
+                    }
                     if (app.dayWeek == 'day') {
+
                         slot = app.setClockPosition(slot, specify);
-                        style = 'top: calc('+slotSize*slot+'px + 60px); width: calc(100% - 60px);';
+                        style = 'top: calc('+slotSize*slot+'px + 60px - '+parseInt(2+z)+'px); width: calc(100% - 60px);';
                     } else {
                         // slot = app.setPositionAccordingToTime(slot, specify);
                         slot = app.setClockPosition(slot, specify);
-                        style = 'top: calc('+slotSize+'px * '+slot+')';
+                        style = 'top: calc('+slotSize+'px * '+slot+' - '+parseInt(2+z)+'px);';
                     }
 
-                    app.makeItem("#we", style, value[i].start, value[i].end, value[i].action_general, value[i].responsible, hour, minute);
+                    app.makeItem("#we", style, value[i].start, value[i].end, value[i].action_general, value[i].responsible, hour, minute, value[i].action, key);
                 }
             }
 
@@ -294,16 +357,25 @@ var app = {
                     var specify = value[i].start.split(":")[1];
                     var minute = specify;
                     var style = "";
+
+                    var getSlot = ['08','09','10','11','12','13','14','15','16','17','18','19','20','21','22'];
+                    var z = 0;
+                    if (hour >= 8 && hour <= 22) {
+                        z = getSlot.indexOf(hour.toString());
+                    } else {
+                        z = -1;
+                    }
                     if (app.dayWeek == 'day') {
+
                         slot = app.setClockPosition(slot, specify);
-                        style = 'top: calc('+slotSize*slot+'px + 60px); width: calc(100% - 60px);';
+                        style = 'top: calc('+slotSize*slot+'px + 60px - '+parseInt(2+z)+'px); width: calc(100% - 60px);';
                     } else {
                         // slot = app.setPositionAccordingToTime(slot, specify);
                         slot = app.setClockPosition(slot, specify);
-                        style = 'top: calc('+slotSize+'px * '+slot+')';
+                        style = 'top: calc('+slotSize+'px * '+slot+' - '+parseInt(2+z)+'px);';
                     }
 
-                    app.makeItem("#th", style, value[i].start, value[i].end, value[i].action_general, value[i].responsible, hour, minute);
+                    app.makeItem("#th", style, value[i].start, value[i].end, value[i].action_general, value[i].responsible, hour, minute, value[i].action, key);
                 }
             }
 
@@ -317,16 +389,25 @@ var app = {
                     var specify = value[i].start.split(":")[1];
                     var minute = specify;
                     var style = "";
+
+                    var getSlot = ['08','09','10','11','12','13','14','15','16','17','18','19','20','21','22'];
+                    var z = 0;
+                    if (hour >= 8 && hour <= 22) {
+                        z = getSlot.indexOf(hour.toString());
+                    } else {
+                        z = -1;
+                    }
                     if (app.dayWeek == 'day') {
+
                         slot = app.setClockPosition(slot, specify);
-                        style = 'top: calc('+slotSize*slot+'px + 60px); width: calc(100% - 60px);';
+                        style = 'top: calc('+slotSize*slot+'px + 60px - '+parseInt(2+z)+'px); width: calc(100% - 60px);';
                     } else {
                         // slot = app.setPositionAccordingToTime(slot, specify);
                         slot = app.setClockPosition(slot, specify);
-                        style = 'top: calc('+slotSize+'px * '+slot+')';
+                        style = 'top: calc('+slotSize+'px * '+slot+' - '+parseInt(2+z)+'px);';
                     }
 
-                    app.makeItem("#fr", style, value[i].start, value[i].end, value[i].action_general, value[i].responsible, hour, minute);
+                    app.makeItem("#fr", style, value[i].start, value[i].end, value[i].action_general, value[i].responsible, hour, minute, value[i].action, key);
                 }
             }
 
@@ -340,16 +421,25 @@ var app = {
                     var specify = value[i].start.split(":")[1];
                     var minute = specify;
                     var style = "";
+
+                    var getSlot = ['08','09','10','11','12','13','14','15','16','17','18','19','20','21','22'];
+                    var z = 0;
+                    if (hour >= 8 && hour <= 22) {
+                        z = getSlot.indexOf(hour.toString());
+                    } else {
+                        z = -1;
+                    }
                     if (app.dayWeek == 'day') {
+
                         slot = app.setClockPosition(slot, specify);
-                        style = 'top: calc('+slotSize*slot+'px + 60px); width: calc(100% - 60px);';
+                        style = 'top: calc('+slotSize*slot+'px + 60px - '+parseInt(2+z)+'px); width: calc(100% - 60px);';
                     } else {
                         // slot = app.setPositionAccordingToTime(slot, specify);
                         slot = app.setClockPosition(slot, specify);
-                        style = 'top: calc('+slotSize+'px * '+slot+')';
+                        style = 'top: calc('+slotSize+'px * '+slot+' - '+parseInt(2+z)+'px);';
                     }
 
-                    app.makeItem("#sa", style, value[i].start, value[i].end, value[i].action_general, value[i].responsible, hour, minute);
+                    app.makeItem("#sa", style, value[i].start, value[i].end, value[i].action_general, value[i].responsible, hour, minute, value[i].action, key);
                 }
             }
 
@@ -363,16 +453,25 @@ var app = {
                     var specify = value[i].start.split(":")[1];
                     var minute = specify;
                     var style = "";
+
+                    var getSlot = ['08','09','10','11','12','13','14','15','16','17','18','19','20','21','22'];
+                    var z = 0;
+                    if (hour >= 8 && hour <= 22) {
+                        z = getSlot.indexOf(hour.toString());
+                    } else {
+                        z = -1;
+                    }
                     if (app.dayWeek == 'day') {
+
                         slot = app.setClockPosition(slot, specify);
-                        style = 'top: calc('+slotSize*slot+'px + 60px); width: calc(100% - 60px);';
+                        style = 'top: calc('+slotSize*slot+'px + 60px - '+parseInt(2+z)+'px); width: calc(100% - 60px);';
                     } else {
                         // slot = app.setPositionAccordingToTime(slot, specify);
                         slot = app.setClockPosition(slot, specify);
-                        style = 'top: calc('+slotSize+'px * '+slot+')';
+                        style = 'top: calc('+slotSize+'px * '+slot+' - '+parseInt(2+z)+'px);';
                     }
 
-                    app.makeItem("#su", style, value[i].start, value[i].end, value[i].action_general, value[i].responsible, hour, minute);
+                    app.makeItem("#su", style, value[i].start, value[i].end, value[i].action_general, value[i].responsible, hour, minute, value[i].action, key);
                 }
             }
 
@@ -411,7 +510,8 @@ var app = {
         if (slotOld >= 8 && slotOld <= 22) {
             slot = getSlot.indexOf(slotOld.toString());
         } else {
-            slot = -1;
+            slot = 0;
+            specify = 0;
         }
         var minadd = (specify*1.66667)/100;
         slot += minadd;
@@ -598,7 +698,7 @@ moment().isoWeekday(7)._d;
         var weekDay;
 
         if (app.dayWeek == 'day') {
-            weekDay = ["#mo"];
+            weekDay = ["#"+moment().format("dd").toLowerCase()];
         } else {
            weekDay = ["#mo", "#tu", "#we", "#th", "#fr", "#sa", "#su"];
         }
