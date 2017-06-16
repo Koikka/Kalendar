@@ -218,6 +218,8 @@ body{
     text-align: center;
     font-size: 35px;
     line-height: 1.9;
+    position: fixed;
+    z-index: 6;
 }
 #daycontainer {
     display: flex;
@@ -236,6 +238,7 @@ body{
     width: calc(100% - 60px);
     float: left;
 }
+
 
 
 
@@ -359,7 +362,37 @@ legend {
 
 
 
-
-
-
+#elementToFadeInAndOut {
+    position: fixed;
+    display: none;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -125px;
+    color: white;
+    width: 250px;
+    height: 100px;
+    background: gray;
+    z-index: 102;
+}
+#elementToFadeInAndOut h3 {
+    text-align: center;
+    line-height: 100px;
+    font-size: 40px;
+}
+#elementToFadeInAndOut p {
+    text-align: center;
+    line-height: 100px;
+    font-size: 16px;
+}
+#curtain {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  display: none;
+  top: 0;
+  left: 0;
+  z-index: 121;
+  background-color: rgba(6,6,6,0.7);
+}
 

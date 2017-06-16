@@ -39,7 +39,10 @@
         <script src="jsondata.js" type="text/javascript"></script>
         <!-- <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script> -->
         <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
-        <script src="http://code.responsivevoice.org/responsivevoice.js"></script>
+        <!-- <script src="http://code.responsivevoice.org/responsivevoice.js"></script> -->
+        <script src="js/responsivevoice.js" type="text/javascript"></script>
+        <!-- As HammerJS -->
+        <script src="js/swipe.js" type="text/javascript"></script>
         <script src="js/moment-with-locales.js"></script>
         <!-- <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script> -->
         <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css"> -->
@@ -50,6 +53,8 @@
         <title>Kalendar</title>
     </head>
     <body>
+        <div id="curtain"></div>
+        <div id=elementToFadeInAndOut><h3></h3><p></p></div>
         <div id="login">
             <fieldset">
                 <legend>Lue tunniste kirjautuaksesi sisään</legend>
@@ -60,7 +65,7 @@
                     <input type="radio" value="weekview" name="view" id="weekview"> <span>Viikko-ohjelma</span>
                 </label>
                 <div id="logos">
-                    <img src="./img/kuntke_combined.png" width="90%" height="90%" />
+                    <img onclick="app.ajax('010101-0101')" src="./img/kuntke_combined.png" width="90%" height="90%" />
                     <!-- <img src="./img/kuntke_logo.png" width="90%" height="90%" />
                     <img src="./img/kuntke_slogan.png" width="50%" height="50%" /> -->
                 </div>
@@ -69,6 +74,7 @@
         <!-- <div id="app" style="display: block;"> -->
         <div id="app">
             <div id="day">
+                <!-- <div id=elementToFadeInAndOut><h3></h3></div> -->
                 <div id="dateinfo"></div>
                 <div id="daycontainer">
                     <div id="daytime">
@@ -228,5 +234,58 @@
         </div>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript">
+            var myElement = document.getElementById("dayinfo");
+            app.hammertime = new Hammer(myElement);
+            app.hammertime.get('swipe').set({ threshold: 200 });
+            app.hammertime.on('swiperight', function(ev) {
+                console.log('swiperight');
+                var weekDay = ["#mo", "#tu", "#we", "#th", "#fr", "#sa", "#su"];
+                var weekDaysFin = ["Maanantai", "Tiistai", "Keskiviikko", "Torstai", "Perjantai", "Lauantai", "Sunnuntai"]
+                var index = weekDay.indexOf(app.visibleday);
+                if (app.visibleday != '#mo') {
+                    console.log(weekDay[index-1]);
+                    $(app.visibleday).css('display', 'none');
+                    app.visibleday = weekDay[index-1];
+                    $(app.visibleday).css('display', 'block');
+                    $('#elementToFadeInAndOut h3').empty();
+                    $('#elementToFadeInAndOut p').empty();
+                    $('#elementToFadeInAndOut h3').append(weekDaysFin[index-1]);
+                    $("#elementToFadeInAndOut").fadeIn(500);
+                    setTimeout(function() {
+                        $("#elementToFadeInAndOut").fadeOut(500);
+                        app.canswipe = true;
+                    }, 3000);
+                    app.canswipe = false;
+                    console.log('/* right swipe */');
+                }
+            });
+            app.hammertime.on('swipeleft', function(ev) {
+                console.log('swipeleft');
+                if (app.canswipe) {
+                    var weekDay = ["#mo", "#tu", "#we", "#th", "#fr", "#sa", "#su"];
+                    var weekDaysFin = ["Maanantai", "Tiistai", "Keskiviikko", "Torstai", "Perjantai", "Lauantai", "Sunnuntai"]
+                    var index = weekDay.indexOf(app.visibleday);
+                    if (app.visibleday != '#su') {
+                        console.log(weekDay[index+1]);
+                        $(app.visibleday).css('display', 'none');
+                        app.visibleday = weekDay[index+1];
+                        $(app.visibleday).css('display', 'block');
+                        $('#elementToFadeInAndOut h3').empty();
+                        $('#elementToFadeInAndOut p').empty();
+                        $('#elementToFadeInAndOut h3').append(weekDaysFin[index+1])
+                        $("#elementToFadeInAndOut").fadeIn(500);
+                        setTimeout(function() {
+                            $("#elementToFadeInAndOut").fadeOut(500);
+                            app.canswipe = true;
+                        }, 3000);
+                        app.canswipe = false;
+                        // app.fadeIn(document.getElementById('elementToFadeInAndOut'));
+
+                        console.log('/* left swipe */');
+                    }
+                }
+            });
+        </script>
     </body>
 </html>

@@ -20,6 +20,14 @@ var app = {
     data: null,
     nfcOn: false,
     dayWeek: 'day',
+    xDown: null,
+    yDown: null,
+    visibleday: '',
+    canswipe: true,
+    positiondisplay: true,
+    positionCounter: 0,
+    hammertime: null,
+
     // Application Constructor
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
@@ -35,7 +43,9 @@ var app = {
             // app.showTime();
             app.showTimeNew();
             console.log('time updated');
-        }, 10000);
+        }, 2000);
+
+
         console.log('deviceready');
         document.addEventListener("resume", app.onResume, false);
         document.addEventListener("pause", app.onPause, false);
@@ -115,25 +125,31 @@ var app = {
         }
         var ms = moment(end,"HH:mm").diff(moment(start,"HH:mm"));
         var d = moment.duration(ms);
-        
+
         var h = ((parseFloat(d*1.0)/1000)/3600)*(340/2);
-        var string_date = date+' '+hour+':'+minute;
+        // var string_date = date+' '+hour+':'+minute;
+        var string_date = date+' '+end;
         var d1 = Date.parse(moment().format('YYYY-MM-DD HH:mm'));
         var d2 = Date.parse(string_date);
         if (d1 < d2) {
-            $(day).append('<div class="data" style="'+style+' height: '+h+'px; background-color: '+color+'"><span class="startItem">'+start+' - '+end+'</span><br /><span class="actionItem">'+action+'</span><br /><span class="responsibleItem">'+(typeof responsible.name == 'undefined' ? "" : responsible.name+", ")+'<i>'+(typeof responsible.profession == 'undefined' ? "" : responsible.profession)+'</i></span><br /><img src="./img/speaker_but.png" width="30px" height="30px" onclick="responsiveVoice.speak(\'Kello '+hour+' '+minute+' . '+action+'\', \'Finnish Female\', {volume: 1});" style="float: right; margin-right: 4px; margin-bottom: 2px;" /></div>');
+            $(day).append('<div class="data" style="'+style+' height: '+h+'px; background-color: '+color+'"><span class="startItem">'+start+' - '+end+'</span><br /><span class="actionItem">'+action+'</span><br /><span class="responsibleItem">'+(typeof responsible.name == 'undefined' ? "" : responsible.name+", ")+'<i>'+(typeof responsible.profession == 'undefined' ? "" : responsible.profession)+'</i></span><br /><img src="./img/speaker_but.png" width="30px" height="30px" onclick="$(\'#curtain\').css(\'display\', \'block\'); responsiveVoice.speak(\'Kello '+hour+' '+minute+' . '+action+'\', \'Finnish Female\', {volume: 1});" style="float: right; margin-right: 4px; margin-bottom: 2px;" /></div>');
         } else {
-            $(day).append('<div class="data" style="'+style+' height: '+h+'px; background-color: '+color+'; opacity: 0.5;"><span class="startItem">'+start+' - '+end+'</span><br /><span class="actionItem">'+action+'</span><br /><span class="responsibleItem">'+(typeof responsible.name == 'undefined' ? "" : responsible.name+", ")+'<i>'+(typeof responsible.profession == 'undefined' ? "" : responsible.profession)+'</i></span><br /><img src="./img/speaker_but.png" width="30px" height="30px" onclick="responsiveVoice.speak(\'Kello '+hour+' '+minute+' . '+action+'\', \'Finnish Female\', {volume: 1});" style="float: right; margin-right: 4px; margin-bottom: 2px;" /></div>');
+            $(day).append('<div class="data" style="'+style+' height: '+h+'px; background-color: '+color+'; opacity: 0.3;"><span class="startItem">'+start+' - '+end+'</span><br /><span class="actionItem">'+action+'</span><br /><span class="responsibleItem">'+(typeof responsible.name == 'undefined' ? "" : responsible.name+", ")+'<i>'+(typeof responsible.profession == 'undefined' ? "" : responsible.profession)+'</i></span><br /><img src="./img/speaker_but.png" width="30px" height="30px" onclick="$(\'#curtain\').css(\'display\', \'block\'); responsiveVoice.speak(\'Kello '+hour+' '+minute+' . '+action+'\', \'Finnish Female\', {volume: 1});" style="float: right; margin-right: 4px; margin-bottom: 2px;" /></div>');
         }
 
 
     },
     ajax: function(id_no) {
         app.nfcOn = false;
+        $('.date').empty();
         var weekDay = ["#mo", "#tu", "#we", "#th", "#fr", "#sa", "#su"];
         // var d = new Date();
         // var currentDay = weekDay[d.getDay()-1];
         var currentDay = "#"+moment().format("dd").toLowerCase();
+        /*var index = weekDay.indexOf(currentDay);
+        weekDay = weekDay.filter(function(item) {
+            return item !== currentDay
+        });*/
         // app.stopNFC();
         // OLD AJAX CALL
         /*$.ajax({
@@ -162,7 +178,9 @@ var app = {
         // NEW AJAX CALL
         // YYYY-MM-DD
         // http://koikka.work/kuntke/calendar_api.php?method=get_calendar&id=010101-0101&start=2017-11-14&end=2017-11-24
-        id_no = '010101-0101';
+
+        // id_no = '010101-0101';
+        $('#curtain').css('display', 'block');
         $.ajax({
             method: "GET",
             url: "http://koikka.work/kuntke/calendar_api.php",
@@ -180,7 +198,16 @@ var app = {
                 console.log(value);
                 if (key=='calname') {
                     app.calowner = value;
-                    alert("Tervetuloa "+app.calowner+"!");
+                    $('#elementToFadeInAndOut p').empty();
+                    $('#elementToFadeInAndOut h3').empty();
+                    $('#elementToFadeInAndOut p').append("Tervetuloa "+app.calowner+"!");
+                    $("#elementToFadeInAndOut").fadeIn(500);
+                    setTimeout(function() {
+                        $("#elementToFadeInAndOut").fadeOut(500);
+                        app.canswipe = true;
+                    }, 3000);
+                    // alert("Tervetuloa "+app.calowner+"!");
+
                 } else {
                     days.push(key);
                 }
@@ -212,17 +239,32 @@ var app = {
                 }
             }
         });
+
         if (document.getElementById('dayview').checked) {
             app.dayWeek = 'day';
             // $('#dayinfo').css({'overflow-x': 'hidden !important'});
             // currentDay = '#mo';
-            $('#dayinfo').append('<div id="'+currentDay.split('#')[1]+'"></div>');
+            // document.addEventListener('touchstart', app.handleTouchStart, false);
+            // document.addEventListener('touchmove', app.handleTouchMove, false);
+
+            app.hammertime.set({ enable: true });
+
+            for (var i = 0; i < weekDay.length; i++) {
+                if (weekDay[i] == currentDay) {
+                    $('#dayinfo').append('<div id="'+currentDay.split('#')[1]+'"></div>');
+                    app.visibleday = currentDay;
+                } else {
+                    $('#dayinfo').append('<div id="'+weekDay[i].split('#')[1]+'" style="display: none;"></div>');
+                }
+            }
+            $('#daytime').css('padding-top', '60px');
             $('#login').css({'display': 'none'});
             $('#app').css({'display': 'block'});
             $('#day').css({'display': 'block'});
             $('#app').css({'min-width': '100%', 'height':'100%'});
             app.dayWeek = 'day';
         } else {
+            app.visibleday = currentDay;
             app.dayWeek = 'week';
             $(currentDay).append('<div id="clockW"></div>');
             $('#login').css({'display': 'none'});
@@ -234,6 +276,7 @@ var app = {
         for (var i = 0; i < 7; i++) {
             app.drawdate(i, moment(moment().isoWeekday(i+1)._d).format('DD.MM.YYYY'));
         }
+        app.moveToCurrentPosition();
     },
     sort: function (a) {
         var swapped;
@@ -530,7 +573,7 @@ var app = {
             var hex = nfc.bytesToHexString(nfcEvent.tag.id);
             console.log(hex);
             $('.date').empty();
-            app.ajax(12567890);
+            app.ajax(hex);
             // if (hex == "044ddbf2bc2b80") {
             //     // $('#login').css({'display': 'none'});
             //     // $('#app').css({'display': 'block'});
@@ -560,7 +603,17 @@ var app = {
         });
     },
     logout: function() {
-        alert("Logout");
+        $('#elementToFadeInAndOut h3').empty();
+        $('#elementToFadeInAndOut p').empty();
+        $('#elementToFadeInAndOut p').append("Yhteys suljettu.");
+        $("#elementToFadeInAndOut").fadeIn(500);
+        setTimeout(function() {
+            $("#elementToFadeInAndOut").fadeOut(500);
+            app.canswipe = true;
+        }, 3000);
+        // alert("Logout");
+        app.positiondisplay = true;
+        app.positionCounter = 0;
         if (app.dayWeek == 'week') {
             var weekDay = ["#mo", "#tu", "#we", "#th", "#fr", "#sa", "#su"];
             for (var i = 0; i < weekDay.length; i++) {
@@ -569,8 +622,12 @@ var app = {
         }
         // $('#dayinfo').empty();
         if (app.dayWeek == 'day') {
+            $('#daytime').css('padding-top', '0px');
             $('#dayinfo').empty();
             $('#dayinfo').append("<div id='clockD'></div>");
+            // document.removeEventListener('touchstart', app.handleTouchStart, false);
+            // document.removeEventListener('touchmove', app.handleTouchMove, false);
+            app.hammertime.set({ enable: true });
         }
         $('#app').css({'display': 'none'});
         $('#login').css({'display': 'block'});
@@ -589,17 +646,17 @@ var app = {
             var localLocale = moment();
             localLocale.locale('fi'); // set this instance to use French
             /*
-moment.locale();         // fi
-moment().format('LT');   // 09.39
-moment().format('LTS');  // 09.39.03
-moment().format('L');    // 26.05.2017
-moment().format('l');    // 26.5.2017
-moment().format('LL');   // 26. toukokuuta 2017
-moment().format('ll');   // 26. touko 2017
-moment().format('LLL');  // 26. toukokuuta 2017, klo 09.39
-moment().format('lll');  // 26. touko 2017, klo 09.39
-moment().format('LLLL'); // perjantai, 26. toukokuuta 2017, klo 09.39
-moment().format('llll'); // pe, 26. touko 2017, klo 09.39
+                moment.locale();         // fi
+                moment().format('LT');   // 09.39
+                moment().format('LTS');  // 09.39.03
+                moment().format('L');    // 26.05.2017
+                moment().format('l');    // 26.5.2017
+                moment().format('LL');   // 26. toukokuuta 2017
+                moment().format('ll');   // 26. touko 2017
+                moment().format('LLL');  // 26. toukokuuta 2017, klo 09.39
+                moment().format('lll');  // 26. touko 2017, klo 09.39
+                moment().format('LLLL'); // perjantai, 26. toukokuuta 2017, klo 09.39
+                moment().format('llll'); // pe, 26. touko 2017, klo 09.39
              */
 
             localLocale.format('LLLL');
@@ -647,23 +704,33 @@ moment().format('llll'); // pe, 26. touko 2017, klo 09.39
     showTimeNew: function() {
         var localLocale = moment();
         localLocale.locale('fi');
-/*
-moment.locale();         // fi
-moment().format('LT');   // 09.39
-moment().format('LTS');  // 09.39.03
-moment().format('L');    // 26.05.2017
-moment().format('l');    // 26.5.2017
-moment().format('LL');   // 26. toukokuuta 2017
-moment().format('ll');   // 26. touko 2017
-moment().format('LLL');  // 26. toukokuuta 2017, klo 09.39
-moment().format('lll');  // 26. touko 2017, klo 09.39
-moment().format('LLLL'); // perjantai, 26. toukokuuta 2017, klo 09.39
-moment().format('llll'); // pe, 26. touko 2017, klo 09.39
-*/
+            /*
+            moment.locale();         // fi
+            moment().format('LT');   // 09.39
+            moment().format('LTS');  // 09.39.03
+            moment().format('L');    // 26.05.2017
+            moment().format('l');    // 26.5.2017
+            moment().format('LL');   // 26. toukokuuta 2017
+            moment().format('ll');   // 26. touko 2017
+            moment().format('LLL');  // 26. toukokuuta 2017, klo 09.39
+            moment().format('lll');  // 26. touko 2017, klo 09.39
+            moment().format('LLLL'); // perjantai, 26. toukokuuta 2017, klo 09.39
+            moment().format('llll'); // pe, 26. touko 2017, klo 09.39
+            */
 
         $('#dateinfo').empty();
         // $('#dateinfo').append(localLocale.format('LLLL'));
-        $('#dateinfo').append(localLocale.format('L')+"  klo:"+localLocale.format('LT'));
+        if (app.visibleday == "#"+moment().format("dd").toLowerCase()) {
+            $('#dateinfo').append(localLocale.format('L')+"  klo:"+localLocale.format('LT'));
+            $('#dateinfo').css('background-color', '#00B0CA');
+        } else {
+            $('#dateinfo').css('background-color', 'rgba(0,176,202,0.25)');
+            var weekDay = ["#mo", "#tu", "#we", "#th", "#fr", "#sa", "#su"];
+            var index = weekDay.indexOf(app.visibleday);
+            var displaydate = moment(moment().isoWeekday(index+1)._d).format('DD.MM.YYYY');
+            $('#dateinfo').append(displaydate+" klo:"+localLocale.format('LT'));
+        }
+        // $('#dateinfo').append(localLocale.format('L')+"  klo:"+localLocale.format('LT'));
         var hour = moment().get('hour');
         var minute = moment().get('minute');
 
@@ -680,28 +747,51 @@ moment().format('llll'); // pe, 26. touko 2017, klo 09.39
             slotSize = (slotSize * timeposi);
         }
 
-
-// This is first day of the week
-moment(moment().format().slice(0, -9)).startOf('isoWeek')._d;
-moment().isoWeekday(1)._d;
-moment(moment().isoWeekday(1)._d).format('DD.MM.YYYY');
-// This is last day of the week
-moment().isoWeekday(7)._d;
+        // This is first day of the week
+        moment(moment().format().slice(0, -9)).startOf('isoWeek')._d;
+        moment().isoWeekday(1)._d;
+        moment(moment().isoWeekday(1)._d).format('DD.MM.YYYY');
+        // This is last day of the week
+        moment().isoWeekday(7)._d;
 
 
         var style = 'top: calc('+slotSize+'px)'
 
         $(id).css({'top': slotSize+'px'});
     },
+    moveToCurrentPosition: function() {
+        setTimeout(function() {
+            if (app.positiondisplay) {
+                if (app.dayWeek == 'week') {
+                    $('html, body').animate({
+                        scrollTop: $("#clockW").offset().top - (window.screen.height/2),
+                        scrollLeft: $(app.visibleday).position().left - (window.screen.width/2)
+                    }, 1000);
+                    // $('html, body').animate({scrollLeft: $(app.visibleday).position().left}, 1000);
+                }
+                if (app.dayWeek == 'day') {
+                    $('html, body').animate({
+                        scrollTop: $("#clockD").offset().top - (window.screen.height/2)
+                    }, 1000);
+                }
+            }
+            $('#curtain').css('display', 'none');
+        }, 3000);
+        // if (app.positionCounter <= 2) {
+        //     app.positiondisplay = false;
+        // } else {
+        //     app.positionCounter++;
+        // }
+    },
     drawHourLine: function() {
         var slotSize = 340/2;
         var weekDay;
 
-        if (app.dayWeek == 'day') {
-            weekDay = ["#"+moment().format("dd").toLowerCase()];
-        } else {
+        // if (app.dayWeek == 'day') {
+            // weekDay = ["#"+moment().format("dd").toLowerCase()];
+        // } else {
            weekDay = ["#mo", "#tu", "#we", "#th", "#fr", "#sa", "#su"];
-        }
+        // }
         for (var i = 1; i <= 14; i++) {
             var style = "";
             if (app.dayWeek == 'day') {
@@ -713,9 +803,98 @@ moment().isoWeekday(7)._d;
                 $(weekDay[j]).append('<div class="hour_line" style="'+style+'"></div>');
             }
         }
+    },
+    handleTouchStart: function(evt) {
+        app.xDown = evt.touches[0].clientX;
+        app.yDown = evt.touches[0].clientY;
+    },
+    handleTouchMove: function(evt) {
+        if ( ! app.xDown || ! app.yDown ) {
+            return;
+        }
+
+
+        var xUp = evt.touches[0].clientX;
+        // var yUp = evt.touches[0].clientY;
+
+        var xDiff = app.xDown - xUp;
+        // var yDiff = app.yDown - yUp;
+        /* reset values */
+        app.xDown = null;
+        app.yDown = null;
+
+
+        var weekDay = ["#mo", "#tu", "#we", "#th", "#fr", "#sa", "#su"];
+        var weekDaysFin = ["Maanantai", "Tiistai", "Keskiviikko", "Torstai", "Perjantai", "Lauantai", "Sunnuntai"]
+        var index = weekDay.indexOf(app.visibleday);
+console.log("2: "+xDiff);
+        // if (Math.abs(xDiff) > Math.abs(yDiff) && app.canswipe) {/*most significant*/
+        if (app.canswipe) {
+            if (xDiff > 15) {
+                if (app.visibleday != '#su') {
+                    console.log(weekDay[index+1]);
+                    $(app.visibleday).css('display', 'none');
+                    app.visibleday = weekDay[index+1];
+                    $(app.visibleday).css('display', 'block');
+                    $('#elementToFadeInAndOut h3').empty();
+                    $('#elementToFadeInAndOut p').empty();
+                    $('#elementToFadeInAndOut h3').append(weekDaysFin[index+1])
+                    $("#elementToFadeInAndOut").fadeIn(500);
+                    setTimeout(function() {
+                        $("#elementToFadeInAndOut").fadeOut(500);
+                        app.canswipe = true;
+                    }, 3000);
+                    app.canswipe = false;
+                    // app.fadeIn(document.getElementById('elementToFadeInAndOut'));
+
+                    console.log('/* left swipe */');
+                }
+            } else if (xDiff < -15) {
+                if (app.visibleday != '#mo') {
+                    console.log(weekDay[index-1]);
+                    $(app.visibleday).css('display', 'none');
+                    app.visibleday = weekDay[index-1];
+                    $(app.visibleday).css('display', 'block');
+                    $('#elementToFadeInAndOut h3').empty();
+                    $('#elementToFadeInAndOut p').empty();
+                    $('#elementToFadeInAndOut h3').append(weekDaysFin[index-1]);
+                    $("#elementToFadeInAndOut").fadeIn(500);
+                    setTimeout(function() {
+                        $("#elementToFadeInAndOut").fadeOut(500);
+                        app.canswipe = true;
+                    }, 3000);
+                    app.canswipe = false;
+                    console.log('/* right swipe */');
+                }
+            }
+        }
+
+    },
+    fadeOut: function(element){
+        var op = 1;  // initial opacity
+        var timer = setInterval(function () {
+            if (op <= 0.1){
+                clearInterval(timer);
+                element.style.display = 'none';
+            }
+            element.style.opacity = op;
+            element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+            op -= op * 0.1;
+        }, 50);
+    },
+    fadeIn: function(element){
+        var op = 0.1;  // initial opacity
+        element.style.display = 'block';
+        var timer = setInterval(function () {
+            if (op >= 1){
+                clearInterval(timer);
+            }
+            element.style.opacity = op;
+            element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+            op += op * 0.1;
+        }, 10);
     }
 };
-
 app.initialize();
 
 
