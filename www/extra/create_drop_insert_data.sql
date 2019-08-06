@@ -100,3 +100,45 @@ drop table kuntke.resurssi;
 ALTER DATABASE kuntke CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 ALTER TABLE kuntke.resurssi CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 ALTER TABLE <table_name> MODIFY <column_name> VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+INSERT kuntke.varaus (sotu, dpvm, alkuaika, loppuaika, hknro, hoitotunn, selite, atyyppi, odotila, vtieto1, vtieto2, vtieto3, vtieto4) VALUES ('010101-0101', CAST('2017-05-22 00:00:00' AS Date), '10:00', '11:00', 'HSH001', 'RTULO', 'TULORYHMÄ', '', 'PÄIVÄSALI 1. KRS', '', '', '', '');
+INSERT kuntke.varaus (sotu, dpvm, alkuaika, loppuaika, hknro, hoitotunn, selite, atyyppi, odotila, vtieto1, vtieto2, vtieto3, vtieto4) VALUES ('010101-0101', CAST('2017-05-22 00:00:00' AS Date), '11:15', '12:00', 'HSH001', 'TULOHAAS', 'TULOHAASTATTELU', '', '2. KRS SAIRAANHOITAJAN HUONE', '', '', '', '');
+INSERT kuntke.varaus (sotu, dpvm, alkuaika, loppuaika, hknro, hoitotunn, selite, atyyppi, odotila, vtieto1, vtieto2, vtieto3, vtieto4) VALUES ('010101-0101', CAST('2017-05-22 00:00:00' AS Date), '12:15', '13:15', '', 'LOUNAS', 'LOUNAS', '', '', '', '', '', '');
+INSERT kuntke.varaus (sotu, dpvm, alkuaika, loppuaika, hknro, hoitotunn, selite, atyyppi, odotila, vtieto1, vtieto2, vtieto3, vtieto4) VALUES ('010101-0101', CAST('2017-05-22 00:00:00' AS Date), '14:00', '15:00', 'HFY001', 'RKUNTO', 'KUNTORYHMÄ', '', 'KELLARIKERROS PULSSI', '', '', '', '');
+INSERT kuntke.varaus (sotu, dpvm, alkuaika, loppuaika, hknro, hoitotunn, selite, atyyppi, odotila, vtieto1, vtieto2, vtieto3, vtieto4) VALUES ('010101-0101', CAST('2017-05-22 00:00:00' AS Date), '15:00', '15:30', 'HFY001', '', 'RYHMÄ', '', 'ORAVA 2. KRS', '', '', '', '');
+INSERT kuntke.varaus (sotu, dpvm, alkuaika, loppuaika, hknro, hoitotunn, selite, atyyppi, odotila, vtieto1, vtieto2, vtieto3, vtieto4) VALUES ('010101-0101', CAST('2017-05-22 00:00:00' AS Date), '15:30', '17:00', 'HKH001', 'VAPAINFO', 'VAPAA-AJANINFO', '', 'PÄIVÄSALI 1. KRS', '', '', '', '');
+INSERT kuntke.varaus (sotu, dpvm, alkuaika, loppuaika, hknro, hoitotunn, selite, atyyppi, odotila, vtieto1, vtieto2, vtieto3, vtieto4) VALUES ('010101-0101', CAST('2017-05-25 00:00:00' AS Date), '09:00', '10:00', 'KFY001', '', 'FYSIOTERAPEUTIN ALKUTUTKIMUS', '', 'FYSIOTERAPIAN AULA', '', '', '', '');
+INSERT kuntke.varaus (sotu, dpvm, alkuaika, loppuaika, hknro, hoitotunn, selite, atyyppi, odotila, vtieto1, vtieto2, vtieto3, vtieto4) VALUES ('010101-0101', CAST('2017-05-25 00:00:00' AS Date), '10:00', '11:00', 'KHK001', '', 'LIIKUNTARYHMÄ', '', 'LIIKUNTASALI AULAN PUOLI', '', '', '', '');
+INSERT kuntke.varaus (sotu, dpvm, alkuaika, loppuaika, hknro, hoitotunn, selite, atyyppi, odotila, vtieto1, vtieto2, vtieto3, vtieto4) VALUES ('010101-0101', CAST('2017-05-25 00:00:00' AS Date), '11:00', '12:00', 'HSH001', '', 'YKSILÖAIKA', '', '2. KRS SAIRAANHOITAJAN HUONE', '', '', '', '');
+INSERT kuntke.varaus (sotu, dpvm, alkuaika, loppuaika, hknro, hoitotunn, selite, atyyppi, odotila, vtieto1, vtieto2, vtieto3, vtieto4) VALUES ('010101-0101', CAST('2017-05-25 00:00:00' AS Date), '12:00', '14:00', '', 'LOUNAS', 'LOUNAS', '', '', '', '', '', '');
+INSERT kuntke.varaus (sotu, dpvm, alkuaika, loppuaika, hknro, hoitotunn, selite, atyyppi, odotila, vtieto1, vtieto2, vtieto3, vtieto4) VALUES ('010101-0101', CAST('2017-05-25 00:00:00' AS Date), '14:00', '15:00', 'HFY002', 'RKUNTO  ', 'KUNTORYHMÄ', '', 'KELLARIKERROS PULSSI', '', '', '', '');
+INSERT kuntke.varaus (sotu, dpvm, alkuaika, loppuaika, hknro, hoitotunn, selite, atyyppi, odotila, vtieto1, vtieto2, vtieto3, vtieto4) VALUES ('010101-0101', CAST('2017-05-25 00:00:00' AS Date), '15:00', '16:00', 'HLA001', '', 'LÄÄKÄRIN ALKUTARKASTUS', '', 'OSASTO 3 HUONE 11', '', '', '', '');
+INSERT kuntke.varaus (sotu, dpvm, alkuaika, loppuaika, hknro, hoitotunn, selite, atyyppi, odotila, vtieto1, vtieto2, vtieto3, vtieto4) VALUES ('010101-0101', CAST('2017-05-28 00:00:00' AS Date), '09:00', '10:00', 'HFY002', '', 'FYSIOTERAPIAN YKSILÖAIKA', '', 'FYSIOTERAPIAN AULA', '', '', '', '');
+INSERT kuntke.varaus (sotu, dpvm, alkuaika, loppuaika, hknro, hoitotunn, selite, atyyppi, odotila, vtieto1, vtieto2, vtieto3, vtieto4) VALUES ('010101-0101', CAST('2017-05-28 00:00:00' AS Date), '10:00', '11:00', 'HFY003', 'RULKO   ', 'ULKOILURYHMÄ', '', '', '', '', '', '');
+INSERT kuntke.varaus (sotu, dpvm, alkuaika, loppuaika, hknro, hoitotunn, selite, atyyppi, odotila, vtieto1, vtieto2, vtieto3, vtieto4) VALUES ('010101-0101', CAST('2017-05-28 00:00:00' AS Date), '11:00', '14:00', '', 'LOUNAS', 'LOUNAS', '', '', '', '', '', '');
+INSERT kuntke.varaus (sotu, dpvm, alkuaika, loppuaika, hknro, hoitotunn, selite, atyyppi, odotila, vtieto1, vtieto2, vtieto3, vtieto4) VALUES ('010101-0101', CAST('2017-05-28 00:00:00' AS Date), '14:00', '15:00', 'HLA002', 'RPSYKO  ', 'PSYKOSOSIAALINEN RYHMÄ', '', 'TERAPIAKEITTIÖT-AULA', '', '', '', '');
+INSERT kuntke.varaus (sotu, dpvm, alkuaika, loppuaika, hknro, hoitotunn, selite, atyyppi, odotila, vtieto1, vtieto2, vtieto3, vtieto4) VALUES ('010101-0101', CAST('2017-05-28 00:00:00' AS Date), '15:00', '16:00', 'HTA001', 'RTOIMI  ', 'TOIMINTATERAPIA', '', 'TOIMINTATERAPIAN AULA', '', '', '', '');
+
+
+
+
+
+
+
+
+
+
